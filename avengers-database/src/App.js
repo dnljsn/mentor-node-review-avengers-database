@@ -1,25 +1,34 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import axios from 'axios'
 
 class App extends Component {
+  constructor(){
+    super();
+    this.state = {
+      avengers: []
+    }
+  }
+
+  componentDidMount(){
+    axios.get("/api/avengers")
+      .then(res => {
+        console.log(res.data)
+        this.setState({
+          avengers: res.data
+        })
+      })
+  }
+
   render() {
+    let avengers = this.state.avengers.map((val, i) => {
+      return <h3 key={i}>Name: {val.name}</h3>
+    })
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h1>Avengers</h1>
+        {avengers}
       </div>
     );
   }
